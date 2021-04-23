@@ -70,26 +70,58 @@ private:
         // Generally say that when http://localhost:9080/ready is called, the handleReady function should be called. 
         // For the default level of heliomare 
         Routes::Get(router, "/ready", Routes::bind(&Generic::handleReady));
-        // Routes::Get(router, "/auth", Routes::bind(&MicrowaveEndpoint::doAuth, this));
         // update the level of heliomare coresponding to the value in the route
         // update the incalzire property coresponding to the value in the route
         Routes::Post(router, "/properties/:propertyName/:value", Routes::bind(&SmartWindowEndpoint::setProperty, this));
         // for this Route will receive the default level of heliomare: 0, if the `heliomare` was not set before
         // for this Route will receive the default value for incalzire: Off, if the `incalzire` was not set before
         Routes::Get(router, "/properties/:propertyName/", Routes::bind(&SmartWindowEndpoint::getProperty, this));
+        
+        // for thie Route the propertyName is being setted by manual input (action)
+        // for `trapa` the action is: open/ close 
+        Routes::Post(router, "/actions/:propertyName/:action", Routes::bind(&SmartWindowEndpoint::setAction, this));
 
     }
 
-    
-    // void doAuth(const Rest::Request& request, Http::ResponseWriter response) {
-    //     // Function that prints cookies
-    //     printCookies(request);
-    //     // In the response object, it adds a cookie regarding the communications language.
-    //     response.cookies()
-    //         .add(Http::Cookie("lang", "en-US"));
-    //     // Send the response
-    //     response.send(Http::Code::Ok);
-    // }
+    void setAction(const Rest::Request& request, Http::ResponseWriter response){
+        auto propertyName = request.param(":propertyName").as<std::string>();
+
+        // This is a guard that prevents editing the same value by two concurent threads. 
+        Guard guard(smartWindowLock);
+
+        std::string action; 
+        if(request.hasParam(":action")) {
+            auto act = request.param(":action");
+            action = act.as<string>();
+        }
+
+        // Setting the smartWindow's action coresponding to propertyName + action 
+        int setResponse = sw.setAct(propertyName, action);
+
+
+        if(propertyName == "trapa") {
+            if (setResponse != -1) {
+                if(setResponse == 1) {
+                    response.send(Http::Code::Ok, propertyName + " was set to opened \n");
+                }
+                else {
+                    response.send(Http::Code::Ok, propertyName + " was set to closed \n");
+                }
+                
+            }
+            else {
+                response.send(Http::Code::Not_Found, action + "' was not a valid value " + "\n");
+            }   
+        }
+        else {
+            
+            response.send(Http::Code::Not_Found, propertyName + " was not found \n ");
+        }
+
+    }
+
+
+
 
     // Endpoint to configure one of the SmartWindow's properties.
     void setProperty(const Rest::Request& request, Http::ResponseWriter response){
@@ -106,6 +138,7 @@ private:
             auto value = request.param(":value");
             val = value.as<int>();
         }
+
 
         // Setting the smartWindow's property coresponding to value 
         // 1 2 3 (0 - error)
@@ -134,6 +167,21 @@ private:
             else {
                 response.send(Http::Code::Not_Found, to_string(val) + "' was not a valid value " + "\n");
             } 
+
+        }
+        else if(propertyName == "trapa") {
+            if (setResponse != -1) {
+                if(setResponse == 1) {
+                    response.send(Http::Code::Ok, "It is raining! " + propertyName + " was set to closed \n");
+                }
+                else {
+                    response.send(Http::Code::Ok, "It is not raining! " + propertyName + " was not changed \n");
+                }
+                
+            }
+            else {
+                response.send(Http::Code::Not_Found, to_string(val)+ "' was not a valid value " + "\n");
+            }   
 
         }
         else {
@@ -204,6 +252,36 @@ private:
                 }
                 return -1;
             }
+            else if(name == "trapa") {
+                trapa.name = name;
+                if(value == 100) {
+                    trapa.value = "Closed";
+                    return 1;
+                }
+                else if(value >= 0 && value < 100) {
+                    return 0;
+                }
+                return -1;
+                
+            }
+            return -1;
+        }
+
+
+        int setAct(std::string name, string value){
+            if(name == "trapa") {
+                trapa.name = name;
+                if(value == "open") {
+                    trapa.value = "Opened";
+                    return 1;
+                }
+                else if(value == "close") {
+                    trapa.value = "Closed";
+                    return 0;
+                }
+                return -1;
+                
+            }
             return -1;
         }
 
@@ -214,6 +292,9 @@ private:
             }
             else if(name == "incalzire") {
                 return incalzire.value;
+            }
+            else if(name == "trapa") {
+                return trapa.value;
             }
             else{
                 return "";
@@ -231,6 +312,12 @@ private:
             std::string name;
             std::string value = "Off";
         }incalzire;
+
+        struct trapaProperty{
+            std::string name;
+            std::string value = "Closed";
+        }trapa;
+
     };
 
     // Create the lock which prevents concurrent editing of the same variable
