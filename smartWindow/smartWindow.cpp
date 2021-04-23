@@ -113,6 +113,21 @@ private:
                 response.send(Http::Code::Not_Found, action + "' was not a valid value " + "\n");
             }   
         }
+        else if (propertyName== "stergatoare")
+        {
+             if (setResponse != -1) {
+                if(setResponse == 1) {
+                    response.send(Http::Code::Ok, propertyName + " was set to on \n");
+                }
+                else {
+                    response.send(Http::Code::Ok, propertyName + " was set to off \n");
+                }
+                
+            }
+            else {
+                response.send(Http::Code::Not_Found, action + "' was not a valid value " + "\n");
+            }  
+        }
         else {
             
             response.send(Http::Code::Not_Found, propertyName + " was not found \n ");
@@ -174,8 +189,12 @@ private:
                 if(setResponse == 1) {
                     response.send(Http::Code::Ok, "It is raining! " + propertyName + " was set to closed \n");
                 }
+                if(setResponse == 2)
+                {
+                    response.send(Http::Code::Ok, "It is raining! " + propertyName + " is already closed \n");
+                }
                 else {
-                    response.send(Http::Code::Ok, "It is not raining! " + propertyName + " was not changed \n");
+                    response.send(Http::Code::Ok, "It is not raining! " + propertyName + "status was not changed \n");
                 }
                 
             }
@@ -184,6 +203,27 @@ private:
             }   
 
         }
+        else if (propertyName == "stergatoare")
+        {
+            if (setResponse != -1) {
+                if(setResponse == 1) {
+                    response.send(Http::Code::Ok, "It is raining! " + propertyName + " was set to on\n");
+                }
+                if(setResponse == 2)
+                {
+                    response.send(Http::Code::Ok, "It is raining! " + propertyName + " are already on\n");
+                }
+                else {
+                    response.send(Http::Code::Ok, "It is not raining! " + propertyName + "status was not changed \n");
+                }
+                
+            }
+            else {
+                response.send(Http::Code::Not_Found, to_string(val)+ "' was not a valid value " + "\n");
+            }  
+        }
+        
+
         else {
             
             response.send(Http::Code::Not_Found, propertyName + " was not found \n ");
@@ -255,6 +295,8 @@ private:
             else if(name == "trapa") {
                 trapa.name = name;
                 if(value == 100) {
+                    if(trapa.value=="Closed")
+                        return 2;
                     trapa.value = "Closed";
                     return 1;
                 }
@@ -263,6 +305,21 @@ private:
                 }
                 return -1;
                 
+            }
+            else if(name == "stergatoare")
+            {
+                stergatoare.name=name;
+                
+                if(value == 100) {
+                    if(stergatoare.value=="On")
+                        return 2;
+                    stergatoare.value = "On";
+                    return 1;
+                }
+                else if(value >= 0 && value < 100) {
+                    return 0;
+                }
+                return -1;
             }
             return -1;
         }
@@ -282,6 +339,20 @@ private:
                 return -1;
                 
             }
+            else if(name=="stergatoare")
+                {
+                    stergatoare.name=name;
+                    if(value=="on"){
+
+                    stergatoare.value="On";
+                    return 1;
+                    }
+                    else if(value=="off"){
+                        stergatoare.value="Off";
+                        return 0;
+                    }
+                    return -1;
+                }
             return -1;
         }
 
@@ -296,7 +367,13 @@ private:
             else if(name == "trapa") {
                 return trapa.value;
             }
-            else{
+        
+            else if(name=="stergatoare")
+            {
+                return stergatoare.value;
+            }
+            else
+            {
                 return "";
             }
         }
@@ -317,6 +394,11 @@ private:
             std::string name;
             std::string value = "Closed";
         }trapa;
+
+        struct stergatoarePropert{
+            std::string name;
+            std::string value = "Off";
+        }stergatoare;
 
     };
 
