@@ -119,6 +119,9 @@ private:
                 if(setResponse == 1) {
                     response.send(Http::Code::Ok, propertyName + " was set to on \n");
                 }
+                else if(setResponse == 2) {
+                    response.send(Http::Code::Ok, "It is raining! " + propertyName + " are already on \n");
+                }
                 else {
                     response.send(Http::Code::Ok, propertyName + " was set to off \n");
                 }
@@ -194,7 +197,7 @@ private:
                     response.send(Http::Code::Ok, "It is raining! " + propertyName + " is already closed \n");
                 }
                 else {
-                    response.send(Http::Code::Ok, "It is not raining! " + propertyName + "status was not changed \n");
+                    response.send(Http::Code::Ok, "It is not raining! " + propertyName + " status was not changed \n");
                 }
                 
             }
@@ -213,8 +216,11 @@ private:
                 {
                     response.send(Http::Code::Ok, "It is raining! " + propertyName + " are already on\n");
                 }
+                if(setResponse == 3) {
+                    response.send(Http::Code::Ok, "It is not raining anymore! " + propertyName + " was set to Off\n");
+                }
                 else {
-                    response.send(Http::Code::Ok, "It is not raining! " + propertyName + "status was not changed \n");
+                    response.send(Http::Code::Ok, "It is not raining! " + propertyName + " status was not changed \n");
                 }
                 
             }
@@ -314,9 +320,18 @@ private:
                     if(stergatoare.value=="On")
                         return 2;
                     stergatoare.value = "On";
+                    stergatoare.byAction = false;
                     return 1;
                 }
                 else if(value >= 0 && value < 100) {
+                    if(stergatoare.value == "On" )
+                        if(stergatoare.byAction == true){
+                            return 0;
+                        }
+                        else {
+                            stergatoare.value = "Off";
+                            return 3;
+                        }
                     return 0;
                 }
                 return -1;
@@ -342,10 +357,13 @@ private:
             else if(name=="stergatoare")
                 {
                     stergatoare.name=name;
-                    if(value=="on"){
-
-                    stergatoare.value="On";
-                    return 1;
+                    if(value=="on" && stergatoare.value == "Off"){
+                        stergatoare.value="On";
+                        stergatoare.byAction = true; 
+                        return 1;
+                    }
+                    else if(value == "on" && stergatoare.value == "On") {
+                        return 2;
                     }
                     else if(value=="off"){
                         stergatoare.value="Off";
@@ -398,6 +416,7 @@ private:
         struct stergatoarePropert{
             std::string name;
             std::string value = "Off";
+            bool byAction = false; 
         }stergatoare;
 
     };
