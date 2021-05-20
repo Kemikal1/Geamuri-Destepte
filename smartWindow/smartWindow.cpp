@@ -166,7 +166,7 @@ private:
         // Sending some confirmation or error response.
         if(propertyName == "heliomare") {
             if (setResponse != -1) {
-            response.send(Http::Code::Ok, propertyName + " was set to " + to_string(setResponse) + "\n");
+            response.send(Http::Code::Ok, propertyName + " was set to level" + to_string(setResponse) + "\n");
             }
             else {
                 response.send(Http::Code::Not_Found, to_string(val) + "' was not a valid value " + "\n");
@@ -228,7 +228,18 @@ private:
                 response.send(Http::Code::Not_Found, to_string(val)+ "' was not a valid value " + "\n");
             }  
         }
-        
+        else if(propertyName == "vocal")
+        {
+            if (setResponse != -1) {
+                string resp = sw.get(propertyName);
+               
+                response.send(Http::Code::Ok, "Afara este " + resp + "\n");
+                
+            }
+            else {
+                response.send(Http::Code::Not_Found, to_string(val)+ "' was not a valid value " + "\n");
+            }  
+        }
 
         else {
             
@@ -254,8 +265,10 @@ private:
             response.headers()
                         .add<Header::Server>("pistache/0.1")
                         .add<Header::ContentType>(MIME(Text, Plain));
-
-            response.send(Http::Code::Ok, propertyName + " is " + valueSetting + "\n");
+            if (propertyName=="vocal")
+                response.send(Http::Code::Ok, "Afara este "+ valueSetting + "\n");
+            else
+                response.send(Http::Code::Ok, propertyName + " is " + valueSetting + "\n");
         }
         else {
             response.send(Http::Code::Not_Found, propertyName + " was not found" + "\n");
@@ -336,6 +349,22 @@ private:
                 }
                 return -1;
             }
+            else if (name == "vocal")
+            {
+                vocal.name=name;
+                if (value>40)
+                {
+                    vocal.value="zi";
+                    return 1;
+                }
+                else
+                {
+                    vocal.value="noapte";
+                    return 2;
+                }
+                return -1;
+            }
+
             return -1;
         }
 
@@ -390,6 +419,10 @@ private:
             {
                 return stergatoare.value;
             }
+            else if(name=="vocal")
+            {
+                return vocal.value;
+            }
             else
             {
                 return "";
@@ -418,6 +451,10 @@ private:
             std::string value = "Off";
             bool byAction = false; 
         }stergatoare;
+        struct vocalProperty{
+            std::string name;
+            std::string value = "Zi";
+        }vocal;
 
     };
 
