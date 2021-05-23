@@ -2,6 +2,7 @@
 
 
 Cerinte de sistem
+
 	Testat pe Ubuntu Server, pentru ca Pistache nu accepta Windows. 
 	Am folosit un compilator C++. Pentru compilare am folosit g++ pentru c++17.
 	Pentru instalarea Pistache, am clonat folderul git si l-am construit prin comanda build.
