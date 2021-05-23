@@ -12,10 +12,10 @@ Building -> utilizand comanda Make pentru construirea aplicatiei ( make )
 
 
 Rulare
+
 	Pentru a porni serverul utilizam comanda ./smartwindows
 	Serverul ar trebui sa afiseze numarul de nuclee si fire de executie folosite si nicio eroare
 	Pentru a testa, deschidem un alt terminal si utilizam comanda 'curl http://localhost:9080/ready'. Ar trebui sa afiseze mesajul : "Your window is ready to set the properties!".
-	
 	Acum serverul ruleaza.
 
 
