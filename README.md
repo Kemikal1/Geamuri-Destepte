@@ -42,9 +42,10 @@ Functionalitatile implementate :
    	- primeste ca valoare temperatura exterioara : 
 		 - daca temp > 0, opreste incalzirea ( Off )
 		 - daca temp < 0, porneste incalzirea ( On )
-				
-	GET: curl -X GET http://localhost:9080/properties/incalzire
-	POST: curl -X POST http://localhost:9080/properties/incalzire/:value (temperatura exterioara)
+	
+
+	- GET: curl -X GET http://localhost:9080/properties/incalzire
+	- POST: curl -X POST http://localhost:9080/properties/incalzire/:value (temperatura exterioara)
 
 	Rezultat : 
 		- value > 0 => Off
