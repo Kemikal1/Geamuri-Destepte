@@ -30,8 +30,8 @@ Functionalitatile implementate :
 		(30 - 60% lumina) -> treapta 2 de heliomare (dimineata) 
 		(60 - 100% lumina) -> treapta 3 de heliomare 
 
-	GET: curl -X GET http://localhost:9080/properties/heliomare
-	POST: curl -X POST http://localhost:9080/properties/heliomare/:value (valoarea luminii) 
+	- GET: curl -X GET http://localhost:9080/properties/heliomare
+	- POST: curl -X POST http://localhost:9080/properties/heliomare/:value (valoarea luminii) 
 	
 	Rezultat : setez treapta de heliomare 1/2/3 ( in functie de value) 
 	
@@ -60,11 +60,11 @@ Functionalitatile implementate :
 	- daca primeste o umiditate != 100, nu se schimba starea trapei (100% => ploua => trapa se inchide) 
 		
 	Ruta properties (inchiderea automata) :
-		GET : curl -X GET http://localhost:9080/properties/trapa
-		POST: curl -X POST http://localhost:9080/properties/trapa/ :value(umiditatea) 
+		- GET : curl -X GET http://localhost:9080/properties/trapa
+		- POST: curl -X POST http://localhost:9080/properties/trapa/ :value(umiditatea) 
 			
 	Ruta actions (trapa este inchisa/deschisa manual) :
-		POST : curl -X POST http://localhost:9080/actions/trapa/ :action(open/close) 
+		- POST : curl -X POST http://localhost:9080/actions/trapa/ :action(open/close) 
 	
 	Rezultat : opened/closed
 	
@@ -79,11 +79,11 @@ Functionalitatile implementate :
 
 	
 	Ruta properties (pornire/oprire automata) : 
-		GET : curl -X GET http://localhost:9080/properties/stergatoare	
-		POST: curl -X POST http://localhost:9080/properties/stergatoare/:value (umiditatea) 
+		- GET : curl -X GET http://localhost:9080/properties/stergatoare	
+		- POST: curl -X POST http://localhost:9080/properties/stergatoare/:value (umiditatea) 
 	
 	Ruta actions (stergatoarele sunt pornite/oprite manual) :
-		POST : curl -X POST http://localhost:9080/actions/stergatoare/:action (open/close)
+		- POST : curl -X POST http://localhost:9080/actions/stergatoare/:action (open/close)
 	
 	Rezultat : on/off
 		
@@ -95,8 +95,8 @@ Functionalitatile implementate :
 	- atentionare vocala cand se insereaza
 	
 	Ruta properties :
-		GET :  curl -X GET http://localhost:9080/properties/vocal
-		POST: curl -X POST http://localhost:9080/properties/vocal/:value (nivelul de lumina) 
+		- GET :  curl -X GET http://localhost:9080/properties/vocal
+		- POST: curl -X POST http://localhost:9080/properties/vocal/:value (nivelul de lumina) 
 	
 	
 	Rezultat :
