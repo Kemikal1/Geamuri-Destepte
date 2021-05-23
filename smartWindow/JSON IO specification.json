@@ -1,66 +1,95 @@
 {
-    "device-name": "Microwave App",
-    "device-type": "Microwave",
-    "buffers-count": 1,
-    "input-buffers":{
-        "1":{
-            "token-delimitators": "",
-            "protocol": "HTTP",
-            "prefix": "curl -XPOST 'http://127.0.0.1:8080/'",
-            "buffer-tokens":[
-            {
-                "name":"Microwave options",
-                "description":"",
-                "token-type":"string", 
-                "byte-size":10, 
-                "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [settings]
-                "optional": false
-            },
-            {
-                "name":"Microwave option parameter key",
-                "description": "Parameter key for the setting chosen",
-                "token-type":"string",
-                "byte-size":10,
-                "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [defrost]
-                "optional": false
-            },
-            {
-                "name":"Microwave option parameter value",
-                "description": "Parameter value for the setting chosen",
-                "token-type":"string",
-                "byte-size":10,
-                "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [true, false]
-                "optional": false
-            }
-            ]
+  "device-name": "Smartwindows App",
+  "device-type": "Smartwindows",
+  "buffers-count": 1,
+  "input-buffers": {
+    "1": {
+      "token-delimitators": "",
+      "protocol": "HTTP",
+      "prefix": "curl -XPOST 'http://127.0.0.1:9080/'",
+      "buffer-tokens": [
+        {
+          "name": "Smartwindows actions",
+          "description": "",
+          "token-type": "string",
+          "byte-size": 10,
+          "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [actions]
+          "optional": false
+        },
+        {
+          "name": "Smartwindows action parameter key",
+          "description": "Parameter key for the action chosen",
+          "token-type": "string",
+          "byte-size": 10,
+          "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [trapa, stergatoare]
+          "optional": false
+        },
+        {
+          "name": "Smartwindows action parameter value",
+          "description": "Parameter value for the action chosen",
+          "token-type": "string",
+          "byte-size": 10,
+          "regex-rule": "^[A-Za-z]+", // Correct inputs will be: [on, off, close, open]
+          "optional": false
         }
+      ]
     },
-    "output-buffers":{
-        "1":{
-            "token-delimitators": "",
-            "protocol": "HTTP",
-            "prefix": "curl -XGET 'http://127.0.0.1:8080/'",
-            "buffer-tokens":[
-            {
-                "name":"Microwave options",
-                "description":"",
-                "token-type":"string", 
-                "byte-size":10, 
-                "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [ready, auth, settings]
-                "optional": false
-            },
-            {
-                "name":"Microwave options parameter",
-                "description": "Parameters for the setting chosen",
-                "token-type":"string",
-                "byte-size":10,
-                "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [defrost]
-                "optional": true
-            }
-            ]
+    "2": {
+      "token-delimitators": "",
+      "protocol": "HTTP",
+      "prefix": "curl -XPOST 'http://127.0.0.1:9080/'",
+      "buffer-tokens": [
+        {
+          "name": "Smartwindows properties",
+          "description": "",
+          "token-type": "string",
+          "byte-size": 10,
+          "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [properties]
+          "optional": false
+        },
+        {
+          "name": "Smartwindows property parameter key",
+          "description": "Parameter key for the property chosen",
+          "token-type": "string",
+          "byte-size": 10,
+          "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [heliomare, incalzire, trapa, stergatoare, vocal]
+          "optional": false
+        },
+        {
+          "name": "Smartwindows property parameter value",
+          "description": "Parameter value for the property chosen",
+          "token-type": "string",
+          "byte-size": 10,
+          "regex-rule": "^[0-9]+|^-[0-9]+", // Correct inputs will be: [(orice numar intreg)]
+          "optional": false
         }
+      ]
     }
+
+  },
+  "output-buffers": {
+    "1": {
+      "token-delimitators": "",
+      "protocol": "HTTP",
+      "prefix": "curl -XGET 'http://127.0.0.1:9080/'",
+      "buffer-tokens": [
+        {
+          "name": "Smartwindows properties",
+          "description": "",
+          "token-type": "string",
+          "byte-size": 10,
+          "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [ready, properties]
+          "optional": false
+        },
+        {
+          "name": "Smartwindows properties parameter",
+          "description": "Parameters for the property chosen",
+          "token-type": "string",
+          "byte-size": 10,
+          "regex-rule": "[a-zA-Z]*", // Correct inputs will be: [heliomare, incalzire, trapa, stergatoare, vocal]
+          "optional": true
+        }
+      ]
+    }
+  }
 }
-
-
-
