@@ -69,3 +69,12 @@ sleep $SLEEP
 
 curl -X POST localhost:9080/properties/stergatoare/50
 curl -X GET localhost:9080/properties/stergatoare
+sleep $SLEEP
+
+curl -X GET localhost:9080/properties/vocal
+sleep $SLEEP
+
+curl -X POST localhost:9080/properties/vocal/20
+sleep $SLEEP
+
+curl -X POST localhost:9080/properties/vocal/50
