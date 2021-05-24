@@ -166,7 +166,7 @@ private:
         // Sending some confirmation or error response.
         if(propertyName == "heliomare") {
             if (setResponse != -1) {
-            response.send(Http::Code::Ok, propertyName + " was set to level" + to_string(setResponse) + "\n");
+            response.send(Http::Code::Ok, propertyName + " was set to level " + to_string(setResponse) + "\n");
             }
             else {
                 response.send(Http::Code::Not_Found, to_string(val) + "' was not a valid value " + "\n");
